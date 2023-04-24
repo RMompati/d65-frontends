@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SigninRequest } from 'src/app/interface/signin-request';
 
 @Component({
   selector: 'app-sign-in',
@@ -31,5 +32,9 @@ export class SignInComponent {
 
   getPassword() {
     return this.signInForm.value.password!!
+  }
+
+  getLoginReqest() {
+    return this.signInForm.value as SigninRequest
   }
 }
