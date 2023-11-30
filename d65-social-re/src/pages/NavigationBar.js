@@ -28,9 +28,9 @@ export const NavigationBar = () => {
               { !user && <li className="nav-item"><Link className="nav-link" to="/signup">Sign Up</Link></li> }
               { !user && <li className="nav-item"><Link className="nav-link" to="/login">Log In</Link></li> }
               { user &&
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i className="bi bi-person-circle" style={{fontSize: "24px", marginTop: "0"}}></i>
+                  <li className="dropdown">
+                    <a className="text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i className="bi bi-person-circle" style={{fontSize: "28px", marginTop: "0"}}></i> {user.firstName}
                     </a>
 
                     <ul className="dropdown-menu">

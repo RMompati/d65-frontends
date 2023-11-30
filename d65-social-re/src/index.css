@@ -1,3 +1,14 @@
+:root {
+  --sage: #CBD18F;
+  --mustard: #E3B448;
+  --f-green: #3A6B35;
+  --r-blue: #234E70;
+  --s-grey: #606060FF;
+  --silver: #A2A2A1FF;
+  --navy: #28334AFF;
+  --yellow: #FBDE44FF;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +16,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: white;
 }
 
 code {
@@ -25,4 +37,124 @@ code {
 
 .fail {
   background-color: #ffcccb;
+}
+
+.circlemenu {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.circlemenu div {
+  margin: 20% auto 0;
+}
+
+.selector {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin-top: -130px;
+  margin-left: -130px;
+  cursor: pointer;
+}
+
+.selector,
+.selector button {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+}
+
+.selector button {
+  background: var(--navy);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border-radius: 50%;
+  border: 0;
+  color:  var(--yellow);
+  font-weight: bold;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  transition: all .1s;
+}
+
+.selector button {
+  font-size: x-large;
+}
+
+.selector button:hover {
+  background: var(--yellow);
+  color: var(--navy);
+  box-shadow: 0 3px 3px rgba(105, 56, 53, 0.1);
+}
+
+.selector button:focus {
+  outline: none;
+}
+
+.selector ul {
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  top: -5px;
+  right: -5px;
+  bottom: -5px;
+  left: -5px
+}
+
+.selector li {
+  position: absolute;
+  width: 0;
+  height: 100%;
+  margin: 0 50%;
+  -webkit-transform: rotate(-360deg);
+  transition: all 0.8s ease-in-out;
+}
+
+.selector li a {
+  border: 1px rgba(var(--f-green), 0.1);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+  line-height: 5px;
+  margin-left: 0;
+  background: var(--yellow);
+  color:  var(--navy);
+  border-radius: 50%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  overflow: hidden;
+  box-shadow: none;
+  text-decoration: none;
+  transition: all 0.8s ease-in-out, color 0.3s, background 0.2s;
+}
+
+.selector li a:hover,
+.selector li a:visited:hover {
+  background: var(--navy);
+  color:  var(--yellow);
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  margin-left: -40px;
+  font-size: 16px;
+}
+
+.selector li a:visited {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+.selector.open li a {
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  margin-left: -90px;
+  box-shadow: 0 3px 3px rgba(250, 0, 0, 0.1);
+  overflow-wrap: break-word;
 }

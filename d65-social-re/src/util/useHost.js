@@ -7,9 +7,9 @@ export const useApiHost = () => {
 }
 
 export const useApiHostPath = () => {
-  const [apiHost, setApiHost] = useState("http://localhost:5000/api/v1/d65");
+  const [apiHostPath, setApiHostPath] = useState("http://localhost:5000/api/v1/d65");
 
-  return [apiHost, setApiHost]
+  return [apiHostPath, setApiHostPath]
 }
 
 export const useApiAuthPath = () => {

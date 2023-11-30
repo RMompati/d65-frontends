@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useApiAuthPath} from "../util/useHost";
 import {useNavigate} from "react-router-dom";
+import {NavigationBar} from "./NavigationBar";
 
 export const ActivateAccountPage = () => {
 
@@ -41,22 +42,25 @@ export const ActivateAccountPage = () => {
   };
 
   return (
-      <div className="row card shadow-sm w-50 m-auto text-center my-auto p-2">
-        <h3>Account Activation</h3>
-        {responseMessage &&
-            <div className={(!isErrorMsg ? "alert alert-success" : "alert alert-danger") + " p-1 w-75 align-self-center"}> { responseMessage } </div>}
-        <div className="text-muted fw-bold mb-1 p-2 align-self-center">Please check your emails for the activation code.</div>
-        <form className="w-75 m-auto">
-          <div className="form-floating mb-3">
-            <input type="text" id="code" placeholder="i.e., xxxjhjak"
-                   className="form-control w-50"
-                   value={activationCode}
-                   onChange={ event => setActivationCode(event.target.value) } />
-            <label>Activation Code</label>
-          </div>
+     <>
+       {<NavigationBar/>}
+       <div className="row card shadow-sm w-50 m-auto text-center my-auto p-2">
+         <h3>Account Activation</h3>
+         {responseMessage &&
+             <div className={(!isErrorMsg ? "alert alert-success" : "alert alert-danger") + " p-1 w-75 align-self-center"}> { responseMessage } </div>}
+         <div className="text-muted fw-bold mb-1 p-2 align-self-center">Please check your emails for the activation code.</div>
+         <form className="w-75 m-auto">
+           <div className="form-floating mb-3">
+             <input type="text" id="code" placeholder="i.e., xxxjhjak"
+                    className="form-control w-50"
+                    value={activationCode}
+                    onChange={ event => setActivationCode(event.target.value) } />
+             <label>Activation Code</label>
+           </div>
 
-          <button className="btn btn-primary" onClick={onActivateAccountClicked}>Activate Account</button>
-        </form>
-      </div>
+           <button className="btn btn-primary" onClick={onActivateAccountClicked}>Activate Account</button>
+         </form>
+       </div>
+     </>
   );
 }

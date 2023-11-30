@@ -4,7 +4,6 @@ import {SignUpPage} from "./pages/SignUpPage";
 import {HomePage} from "./pages/HomePage";
 import {PrivateRoute} from "./auth/PrivateRoute";
 import {DashboardPage} from "./pages/DashboardPage";
-import {NavigationBar} from "./pages/NavigationBar";
 import {ActivateAccountPage} from "./pages/ActivateAccountPage";
 import {LogoutPage} from "./pages/LogoutPage";
 import {AboutPage} from "./pages/AboutPage";
