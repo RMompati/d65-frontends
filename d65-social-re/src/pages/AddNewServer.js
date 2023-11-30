@@ -5,14 +5,13 @@ import {useMessage} from "../util/useMessage";
 import {useServers} from "../util/useServers";
 import {useToken} from "../auth/useToken";
 
-export const AddNewServer = () => {
+export const AddNewServer = ({servers, setServers}) => {
 
   const [apiHostPath,] = useApiHostPath();
   const [token,] = useToken();
 
   const [isError, setIsError] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useMessage();
-  const [servers, setServers] = useServers()
 
   const [serverName, setServerName] = useState("");
   const [serverMemory, setServerMemory] = useState("");

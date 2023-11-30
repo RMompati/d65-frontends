@@ -57,6 +57,7 @@ export const DashboardPage = () => {
     await axios.get(`${apiHostPath}/server/ping/${serverId}`, {headers: {Authorization: `Bearer ${token}`}})
         .then(value => value.data)
         .then(data => {
+          console.log(data)
           setPingLoading(false);
           const {message} = data;
           setMessage(message);
@@ -125,7 +126,7 @@ export const DashboardPage = () => {
                 </table>
 
                 {
-                  <AddNewServer />
+                  <AddNewServer servers={servers} setServers={setServers}/>
                 }
               </div>
             </div>
