@@ -15,6 +15,7 @@ export const DashboardPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [pingLoading, setPingLoading] = useState(false);
+  const [operationSuccess, setOperationSuccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
   // const {username, firstName, lasName, exp, iat} = user;
@@ -31,16 +32,20 @@ export const DashboardPage = () => {
           setLoading(false);
           const {servers} = data.data;
           const {message} = data;
+
+          setOperationSuccess(true);
           setMessage(message);
           setServers(servers);
 
         }).catch(reason => {
           console.log(reason);
           const {message} = reason.response.data;
+          setOperationSuccess(false);
           setErrorMessage(message);
           setLoading(false);
         });
   };
+
   useEffect(() => {
     if (message) {
       setTimeout(() => setMessage(""), 10000);
@@ -57,10 +62,25 @@ export const DashboardPage = () => {
     await axios.get(`${apiHostPath}/server/ping/${serverId}`, {headers: {Authorization: `Bearer ${token}`}})
         .then(value => value.data)
         .then(data => {
-          console.log(data)
-          setPingLoading(false);
+          const {server} = data.data;
+
+          const _servers = servers.filter((existingServer) => existingServer.ipAddress !== server.ipAddress);
+
           const {message} = data;
+
+          const _pingSuccess = `${message}`.endsWith("success");
+          setOperationSuccess(_pingSuccess);
+
+          setServers(_pingSuccess ? [server, ..._servers] : [..._servers, server])
+
+          setPingLoading(false);
           setMessage(message);
+        })
+        .catch(reason => {
+          const {message} = reason.response.data;
+          setOperationSuccess(false);
+          setErrorMessage(message);
+          setLoading(false);
         });
   };
 
@@ -82,7 +102,7 @@ export const DashboardPage = () => {
                 <h3 className="col-2">Your Servers</h3>
                 {message &&
                     <div className="col-8">
-                      <div className="alert alert-success text-center p-1 m-auto w-50">{message}</div>
+                      <div className={`alert ${operationSuccess ? "alert-success" : "alert-danger"} text-center p-1 m-auto w-50`}>{message}</div>
                     </div>
                 }
                 <button type="button" className="ms-auto col-2 btn btn-outline-secondary" data-backdrop='static' data-keyboard='false' data-bs-toggle="modal" data-bs-target="#addServerModal"><i className="bi bi-database-add"></i> Add
@@ -109,7 +129,7 @@ export const DashboardPage = () => {
                             <th scope="row">{index}</th>
                             <th>{server.name}</th>
                             <th>{server.ipAddress}</th>
-                            <th className={`${server.status === "SERVER_UP" ? 'text-bg-success' : 'text-bg-danger'}`}>{server.status === "SERVER_UP" ? "Server Up" : "Server Down"}</th>
+                            <th className={`${server.status === "SERVER_UP" ? 'text-success' : 'text-danger'}`}>{server.status === "SERVER_UP" ? "Server Up" : "Server Down"}</th>
                             <th className="d-grid gap-1">
                               <button className="btn btn-outline-secondary btn-sm"
                                       onClick={() => pingServer(server.ipAddress)}
