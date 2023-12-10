@@ -21,16 +21,19 @@ export const LoginPage = () => {
     }, 5000)
   }, [showErrorMessage]);
 
-  const [usernameValue, setUsernameValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
+  const [loginParams, setLoginParams] = useState({
+    username: "",
+    password: ""
+  });
+
+  const handleChange = (event) => {
+    setLoginParams((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value
+    }));
+  }
 
   const onLogInClicked = async (event) => {
-    event.preventDefault();
-
-    const loginParams = {
-      username: usernameValue,
-      password: passwordValue
-    }
 
     await axios.post(`${apiAuthPath}/login`, loginParams)
         .then(response => response.data.data)
@@ -39,7 +42,6 @@ export const LoginPage = () => {
           return auth;
         })
         .then(data => {
-          console.log("Yes...");
           const {authenticationToken} = data;
           setToken(authenticationToken);
 
@@ -69,23 +71,25 @@ export const LoginPage = () => {
 
             <div className="form-floating mb-3">
               <input type="email" id="username" placeholder="example@mail.com"
-                     value={usernameValue}
-                     onChange={event => setUsernameValue(event.target.value)}
+                     name="username"
+                     onChange={handleChange}
+                     value={loginParams.username}
                      className="form-control"/>
               <label>Username</label>
             </div>
 
             <div className="form-floating mb-3">
               <input type="password" id="password" placeholder="example@mail.com"
-                     value={passwordValue}
-                     onChange={event => setPasswordValue(event.target.value)}
+                     name="password"
+                     onChange={handleChange}
+                     value={loginParams.password}
                      className="form-control"/>
               <label>Password</label>
             </div>
 
             <div className="d-grid gap-2 col-10 mx-auto">
               <button className="btn btn-lg btn-primary"
-                      disabled={!usernameValue || !passwordValue}
+                      disabled={!loginParams.username || !loginParams.password}
                       onClick={onLogInClicked}>Log In
               </button>
               <button className="btn btn-secondary" onClick={onSignUpClicked}>Don't have an account yet? Sign Up
