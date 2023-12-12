@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {NavigationBar} from "./NavigationBar";
+import {UserFieldsPage} from "./UserFieldsPage";
+import {useUserFields} from "../util/useUserFields";
 import axios from "axios";
 import {useApiAuthPath} from "../util/useHost";
-import {NavigationBar} from "./NavigationBar";
 
 export const SignUpPage = () => {
 
@@ -22,24 +24,25 @@ export const SignUpPage = () => {
     }, 5000);
   }, [activateAccount, responseMessage]);
 
+  const FeedbackMarkup = () => (
+      <>
+        { responseMessage &&
+            <div className={`${activateAccount ? 'alert alert-success' : 'alert alert-danger'} p-1 w-75 align-self-center`}> { responseMessage } </div>}
+      </>
+  );
+  const SecondActionBtn = () => (<button onClick={onLogInClicked} className="btn btn-secondary">Already have an account? Log In</button>);
 
-  const [firstNameValue, setFirstNameValue] = useState("");
-  const [lastNameValue, setLastNameValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
-  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
+  const [userFields, setUserFields] = useUserFields();
+
+  let userFieldsProps = {
+    "userFields": userFields,
+    "setUserFields": setUserFields,
+  }
 
   const onSignUpClicked = async (event) => {
     event.preventDefault();
 
-    const signUpData = {
-      "firstName": firstNameValue,
-      "lastName": lastNameValue,
-      "email": emailValue,
-      "password": passwordValue,
-    }
-
-    await axios.post(`${apiAuthPath}/register`, signUpData)
+    await axios.post(`${apiAuthPath}/register`, userFieldsProps.userFields)
         .then(value => value.data)
         .then(data => {
           const {message} = data
@@ -51,69 +54,25 @@ export const SignUpPage = () => {
           const {message} = reason.response.data
           setResponseMessage(message);
         });
-    // navigate("/login");
   };
 
   const onLogInClicked = () => {
     navigate("/login");
   };
 
+  userFieldsProps = {
+    ...userFieldsProps,
+    "submitFunction": onSignUpClicked,
+    "submitBtnText": "Sign Up",
+    "formHeading":  "Sign Up",
+    "feedbackMarkup": <FeedbackMarkup />,
+    secondActionBtn: <SecondActionBtn />
+  }
+
   return (
       <>
-        { <NavigationBar /> }
-        <div className="row card shadow-sm w-50 m-auto text-center my-auto p-2">
-          <h1>Sign Up</h1>
-          { responseMessage &&
-              <div className={(activateAccount ? "alert alert-success" : "alert alert-danger") + " p-1 w-75 align-self-center"}> { responseMessage } </div>}
-          <form className="m-auto text-center w-75">
-            <div className="form-floating mb-3">
-              <input type="text" id="first-name" placeholder="i.e, John"
-                     value={firstNameValue}
-                     onChange={ event => setFirstNameValue(event.target.value) }
-                     className="form-control"/>
-              <label>First Name</label>
-            </div>
-
-            <div className="form-floating mb-3">
-              <input type="text" id="last-name" placeholder="i.e, Doe"
-                     value={lastNameValue}
-                     onChange={ event => setLastNameValue(event.target.value) }
-                     className="form-control"/>
-              <label>Last Name</label>
-            </div>
-
-            <div className="form-floating mb-3">
-              <input type="email" id="email" placeholder="i.e, John.Doe@mail.com"
-                     value={emailValue}
-                     onChange={ event => setEmailValue(event.target.value) }
-                     className="form-control"/>
-              <label>Email</label>
-            </div>
-
-            <div className="form-floating mb-3">
-              <input type="password" id="password" placeholder="12345"
-                     value={passwordValue}
-                     onChange={ event => setPasswordValue(event.target.value) }
-                     className="form-control"/>
-              <label>Password</label>
-            </div>
-
-            <div className="form-floating mb-3">
-              <input type="password" id="confirm-password" placeholder="12345"
-                     value={confirmPasswordValue}
-                     onChange={ event => setConfirmPasswordValue(event.target.value) }
-                     className="form-control"/>
-              <label>Confirm Password</label>
-            </div>
-
-            <div className="d-grid gap-2 col-10 mx-auto">
-              <button onClick={onSignUpClicked}
-                      disabled={!firstNameValue || !lastNameValue || !emailValue || !passwordValue || passwordValue !== confirmPasswordValue}
-                      className="btn btn-primary">Sign Up</button>
-              <button onClick={onLogInClicked} className="btn btn-secondary">Already have an account? Log In</button>
-            </div>
-          </form>
-        </div>
+        {<NavigationBar/>}
+        {<UserFieldsPage {...userFieldsProps}/>}
       </>
   );
 };

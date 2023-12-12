@@ -50,7 +50,10 @@ export const HomePage = () => {
     });
   }
 
-  return (
+  return  user
+      ? (
+          <Navigate to={"/dashboard"} />
+      ) : (
       <>
         <div className="h-100 w-100 m-auto text-center">
           <div className="circlemenu">

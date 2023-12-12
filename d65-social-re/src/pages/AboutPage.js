@@ -1,7 +1,14 @@
 import {NavigationBar} from "./NavigationBar";
+import {useUser} from "../auth/useUser";
+import {Navigate} from "react-router-dom";
 
 export const AboutPage = () => {
-  return (
+  const user = useUser();
+
+  return user
+      ? (
+          <Navigate to={"/dashboard"} />
+      ) : (
       <>
         { <NavigationBar /> }
         

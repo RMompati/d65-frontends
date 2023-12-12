@@ -18,7 +18,7 @@ export const LoginPage = () => {
   useEffect(() => {
     setTimeout(() => {
       if (showErrorMessage) setShowErrorMessage(false);
-    }, 5000)
+    }, 10000)
   }, [showErrorMessage]);
 
   const [loginParams, setLoginParams] = useState({
@@ -34,6 +34,7 @@ export const LoginPage = () => {
   }
 
   const onLogInClicked = async (event) => {
+    event.preventDefault()
 
     await axios.post(`${apiAuthPath}/login`, loginParams)
         .then(response => response.data.data)
@@ -49,7 +50,7 @@ export const LoginPage = () => {
         })
         .catch(reason => {
           console.log("Failed...")
-          setShowErrorMessage(true);
+          // setShowErrorMessage(true);
           console.log(reason)
         });
   }
